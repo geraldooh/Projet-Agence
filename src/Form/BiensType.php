@@ -22,6 +22,7 @@ class BiensType extends AbstractType
             ->add('codePostale')
             ->add('prix')
             ->add('vendu')
+            ->add('createdAt')
         ;
     }
 
