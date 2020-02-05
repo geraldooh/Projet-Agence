@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Biens;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Biens|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +18,34 @@ class BiensRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Biens::class);
+    }
+
+
+    /**
+     * @return Biens[]
+     */
+    public function findAllVisible(): array
+    {
+        return $this->findVisibleQuery()
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Biens[]
+     */
+    public function findLatest(): array
+    {
+        return $this->findVisibleQuery()
+            ->setMaxResults(4)
+            ->getQuery()
+            ->getResult();
+    }
+
+    private function findVisibleQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('p')
+            ->where( 'p.vendu = false' );
     }
 
     // /**

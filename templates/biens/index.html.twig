@@ -37,7 +37,6 @@
                 <td>{{ bien.codePostale }}</td>
                 <td>{{ bien.prix }}</td>
                 <td>{{ bien.vendu ? 'Yes' : 'No' }}</td>
-                <td>{{ bien.createdAt ? bien.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('biens_show', {'id': bien.id}) }}">show</a>
                     <a href="{{ path('biens_edit', {'id': bien.id}) }}">edit</a>
