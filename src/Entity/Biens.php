@@ -3,9 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BiensRepository")
+ * @UniqueEntity("titre")
  */
 class Biens
 {
@@ -17,6 +20,7 @@ class Biens
     private $id;
 
     /**
+     * @Assert\Length(min=5, max=255)
      * @ORM\Column(type="string", length=255)
      */
     private $titre;
@@ -28,6 +32,11 @@ class Biens
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Range(
+     *      min=15,
+     *      max=500,
+     *      minMessage = "Soyez honnête pas en dessous de 15m²"
+     * )
      */
     private $surface;
 
@@ -48,6 +57,7 @@ class Biens
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Regex("/^[0-9]{5}$/")
      */
     private $codePostale;
 
@@ -57,9 +67,9 @@ class Biens
     private $prix;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $vendu;
+    private $vendu = false;
 
     /**
      * @ORM\Column(type="datetime")
@@ -71,6 +81,10 @@ class Biens
      */
     private $image;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -165,6 +179,11 @@ class Biens
         return $this->prix;
     }
 
+    public function getFormattedPrix(): string
+    {
+        return number_format($this->prix, 0, '', ' ');
+    }
+
     public function setPrix(int $prix): self
     {
         $this->prix = $prix;
@@ -191,7 +210,7 @@ class Biens
 
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = $createdAt;
 
         return $this;
     }

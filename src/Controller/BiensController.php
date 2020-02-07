@@ -19,10 +19,11 @@ class BiensController extends AbstractController
      * @Route("/", name="biens_index", methods={"GET"})
      */
     public function index(BiensRepository $biensRepository): Response
-    {
+    {   
         return $this->render('biens/index.html.twig', [
             'biens' => $biensRepository->findAll(),
         ]);
+        
     }
 
     /**
@@ -38,6 +39,7 @@ class BiensController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($bien);
             $entityManager->flush();
+            $this->addFlash('success', 'Vous avez bien créer le bien');
 
             return $this->redirectToRoute('biens_index');
         }
@@ -68,6 +70,7 @@ class BiensController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success', 'Vous avez bien modifier le bien');
 
             return $this->redirectToRoute('biens_index');
         }
@@ -87,6 +90,7 @@ class BiensController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($bien);
             $entityManager->flush();
+            $this->addFlash('success', 'Vous avez bien supprimé le bien');
         }
 
         return $this->redirectToRoute('biens_index');

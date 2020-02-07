@@ -3,7 +3,13 @@
 {% block title %}Biens index{% endblock %}
 
 {% block body %}
-    <h1>Biens index</h1>
+    <h1>Gerer les biens</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
 
     <table class="table">
         <thead>
@@ -37,9 +43,11 @@
                 <td>{{ bien.codePostale }}</td>
                 <td>{{ bien.prix }}</td>
                 <td>{{ bien.vendu ? 'Yes' : 'No' }}</td>
+                <td>{{ bien.createdAt | date('Y-m-d H:i:s')}}</td>
+
                 <td>
-                    <a href="{{ path('biens_show', {'id': bien.id}) }}">show</a>
-                    <a href="{{ path('biens_edit', {'id': bien.id}) }}">edit</a>
+                    <a class="btn btn-primary" href="{{ path('biens_show', {'id': bien.id}) }}">show</a>
+                    <a class="btn btn-secondary" href="{{ path('biens_edit', {'id': bien.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -50,5 +58,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('biens_new') }}">Create new</a>
+    <a class="btn btn-success" href="{{ path('biens_new') }}">Create new</a>
 {% endblock %}

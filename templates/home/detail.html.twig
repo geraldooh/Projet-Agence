@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title bien.titre %}
+
+{% block body %}
+    <div class="card mb-3">
+        <h3 class="card-header">{{ bien.titre }}</h3>
+        <div class="card-body">
+            <h5 class="card-title">{{ bien.titre }}</h5>
+        </div>
+
+        <img src="{{ bien.image }}" alt="Card image">
+        
+        <div class="card-body">
+            <p class="card-text">{{ bien.description | nl2br }}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Ville : {{ bien.ville }}</li>
+            <li class="list-group-item">Code Postal : {{ bien.codePostale }}</li> 
+            <li class="list-group-item">Prix : {{ bien.prix | number_format(0, '', ' ') }} $</li>
+            <li class="list-group-item">Prix : {{ bien.formattedPrix }} $</li>
+        </ul>
+        <div class="card-body">
+            <a class="btn btn-primary" href="#" role="button">Contacter l'agence</a>
+        </div>
+        <div class="card-footer text-muted">
+            <p>Mis en ligne le : {{ bien.createdAt | date('d-m-Y')}}</p>
+        </div>
+	</div>
+
+
+{% endblock %}
