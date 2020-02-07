@@ -5,10 +5,11 @@ namespace App\Controller;
 use App\Entity\Biens;
 use App\Form\BiensType;
 use App\Repository\BiensRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * @Route("/biens")
@@ -92,7 +93,7 @@ class BiensController extends AbstractController
             $entityManager->flush();
             $this->addFlash('success', 'Vous avez bien supprimé le bien');
         }
-
+        
         return $this->redirectToRoute('biens_index');
     }
 }
