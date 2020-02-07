@@ -3,9 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Biens;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Biens|null find($id, $lockMode = null, $lockVersion = null)
@@ -22,13 +23,12 @@ class BiensRepository extends ServiceEntityRepository
 
 
     /**
-     * @return Biens[]
+     * @return Query
      */
-    public function findAllVisible(): array
+    public function findAllVisibleQuery(): Query
     {
         return $this->findVisibleQuery()
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
     }
 
     /**
