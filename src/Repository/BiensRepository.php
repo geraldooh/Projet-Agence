@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Biens;
 use Doctrine\ORM\Query;
+use App\Entity\Recherche;
+use App\Form\RechercheType;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -25,10 +27,23 @@ class BiensRepository extends ServiceEntityRepository
     /**
      * @return Query
      */
-    public function findAllVisibleQuery(): Query
+    public function findAllVisibleQuery(Recherche $recherche): Query
     {
-        return $this->findVisibleQuery()
-            ->getQuery();
+        $query = $this->findVisibleQuery();
+
+        if($recherche->getMaxPrix()) {
+            $query = $query
+                ->andwhere('p.prix >= :maxprix')
+                ->setParameter('maxprix', $recherche->getMaxPrix());
+        }
+
+        if($recherche->getMinSurface()) {
+            $query = $query
+                ->andwhere('p.surface <= :minsurf')
+                ->setParameter('minsurf', $recherche->getMinSurface());
+        }
+
+        return $query->getQuery();
     }
 
     /**

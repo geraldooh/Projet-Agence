@@ -25,13 +25,13 @@ class BiensFixture extends Fixture
                  ->setCodePostale(75018)
                  ->setPrix($faker->numberBetween(100000, 1000000))
                  ->setVendu(false)
-                 ->setImage($faker->imageUrl());
+                 ->setImage('http://placehold.it/400x300');
 
 
             $manager->persist($bien);
         }
         
-
+        
         $manager->flush();
     }
 }
