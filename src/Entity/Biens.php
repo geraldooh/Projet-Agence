@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -81,9 +83,15 @@ class Biens
      */
     private $image;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Option", inversedBy="biens")
+     */
+    private $options;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->options = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -223,6 +231,34 @@ class Biens
     public function setImage(string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Option[]
+     */
+    public function getOptions(): Collection
+    {
+        return $this->options;
+    }
+
+    public function addOption(Option $option): self
+    {
+        if (!$this->options->contains($option)) {
+            $this->options[] = $option;
+            $option->addBien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOption(Option $option): self
+    {
+        if ($this->options->contains($option)) {
+            $this->options->removeElement($option);
+            $option->removeBien($this);
+        }
 
         return $this;
     }

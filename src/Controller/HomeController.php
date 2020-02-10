@@ -15,16 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class HomeController extends AbstractController
 {
-    /**
-     * @Route("/{id}", name="bien_detail", methods={"GET"}, requirements={"id"="\d+"})
-     * @ParamConverter("id", options={"id": "id"})
-     */
-    public function detail(Biens $bien): Response
-    {
-        return $this->render('home/detail.html.twig', [
-            'bien' => $bien,
-        ]);
-    }
+    
 
     /**
      * @Route("/", name="home")
@@ -42,6 +33,17 @@ class HomeController extends AbstractController
                 $request->query->getInt('page', 1), 9),
             'form'  => $form->createView()
 
+        ]);
+    }
+    
+    /**
+    * @Route("/{id}", name="bien_detail", methods={"GET"}, requirements={"id"="\d+"})
+    * @ParamConverter("id", options={"id": "id"})
+    */
+    public function detail(Biens $bien): Response
+    {
+        return $this->render('home/detail.html.twig', [
+            'bien' => $bien,
         ]);
     }
 }

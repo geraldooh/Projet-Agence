@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Biens;
+use App\Entity\Option;
 use App\Form\BiensType;
 use App\Repository\BiensRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,6 +66,9 @@ class BiensController extends AbstractController
      */
     public function edit(Request $request, Biens $bien): Response
     {
+        // $option = new Option();
+        // $bien->addOption($option);
+
         $form = $this->createForm(BiensType::class, $bien);
         $form->handleRequest($request);
 

@@ -25,6 +25,7 @@
                 <th>CodePostale</th>
                 <th>Prix</th>
                 <th>Vendu</th>
+                {# <th>Option</th> #}
                 <th>CreatedAt</th>
                 <th>actions</th>
             </tr>
@@ -43,6 +44,7 @@
                 <td>{{ bien.codePostale }}</td>
                 <td>{{ bien.prix }}</td>
                 <td>{{ bien.vendu ? 'Yes' : 'No' }}</td>
+                {# <td>{{ bien.options.nom }}</td> #}
                 <td>{{ bien.createdAt | date('Y-m-d H:i:s')}}</td>
 
                 <td>
