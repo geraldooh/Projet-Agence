@@ -14,7 +14,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BiensRepository")
  * @UniqueEntity("titre")
- * @Vich\Uploadable
  */
 class Biens
 {
@@ -37,7 +36,6 @@ class Biens
     
     /**
      * @var File|null
-     * @Vich\UploadableField(mapping="biens_image", fileNameProperty="imageName")
      */
     private $imageFile;
 
