@@ -28,7 +28,7 @@
 			<div class="card-body">
 				<h5 class="card-title">{{ bien.titre }}</h5>
 			</div>
-			<img src="{{ bien.image }}" alt="Card image">
+			<img src="{{ asset('uploads/files/' ~ bien.file ) }}" alt="Card image">
 			<div class="card-body">
 				<p class="card-text">{{ bien .description}}</p>
 			</div>

@@ -7,6 +7,7 @@ use App\Entity\Option;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BiensType extends AbstractType
@@ -16,7 +17,6 @@ class BiensType extends AbstractType
         $builder
             ->add('titre')
             ->add('description')
-            ->add('image')
             ->add('surface')
             ->add('piece')
             ->add('chambre')
@@ -28,6 +28,15 @@ class BiensType extends AbstractType
                 'class' => Option::class,
                 'choice_label' => 'nom',
                 'multiple' => true
+            ])
+            ->add('imageName')
+            ->add('imageFile', FileType::class, [
+                'required' => false
+            ])
+            ->add('file', FileType::class, [
+                'label' => 'file',
+                'required' => false,
+                'data_class' => null
             ])
         ;
     }

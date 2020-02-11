@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+
 use App\Entity\Biens;
 use App\Entity\Option;
 use App\Form\BiensType;
@@ -9,7 +10,10 @@ use App\Repository\BiensRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+
 
 /**
  * @Route("/biens")
@@ -37,6 +41,25 @@ class BiensController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
+            $file = $form->get('file')->getData();
+            if ($file) {
+                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                // $safeFilename = transliterator_transliterate("Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()", $originalFilename);
+                $newFilename = $originalFilename.'-'.uniqid().'.'.$file->guessExtension();
+                try {
+                    $file->move(
+                        $this->getParameter('files_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+                $bien->setFile($newFilename);
+
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($bien);
             $entityManager->flush();
@@ -66,23 +89,40 @@ class BiensController extends AbstractController
      */
     public function edit(Request $request, Biens $bien): Response
     {
-        // $option = new Option();
-        // $bien->addOption($option);
-
+        
         $form = $this->createForm(BiensType::class, $bien);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $file = $form->get('file')->getData();
+            if ($file) {
+                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                // $safeFilename = transliterator_transliterate("Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()", $originalFilename);
+                $newFilename = $originalFilename.'-'.uniqid().'.'.$file->guessExtension();
+                try {
+                    $file->move(
+                        $this->getParameter('files_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+                $bien->setFile($newFilename);
+            }
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'Vous avez bien modifier le bien');
 
             return $this->redirectToRoute('biens_index');
+        
         }
 
         return $this->render('biens/edit.html.twig', [
             'bien' => $bien,
             'form' => $form->createView(),
         ]);
+        
     }
 
     /**
